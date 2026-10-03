@@ -1,0 +1,33 @@
+/* Layout: coluna única de 1080px. Um bloco forte por seção (a escolha em anil, o cupom em papel); o resto fica em linhas finas e texto. */
+
+/* topo */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top-in{max-width:1080px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:20px}
+.logo{font:800 22px/1 var(--display);letter-spacing:-.02em;color:var(--ink);text-decoration:none;white-space:nowrap}
+.logo b,.hero h1 b{background:var(--mark);color:var(--mark-ink);display:inline-block;transform:rotate(6deg);padding:0 .12em;margin-left:.04em;border-radius:.08em}
+.nav{display:flex;gap:4px;overflow-x:auto;min-width:0;margin-left:auto}
+.nav a{font-weight:600;font-size:14px;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:6px;white-space:nowrap}
+.nav a:hover{color:var(--ink);background:var(--soft)}
+
+/* conteúdo */
+.wrap{max-width:1080px;margin:0 auto;padding-inline:20px;padding-block:0 72px;display:flex;flex-direction:column;gap:72px}
+section{scroll-margin-top:70px;display:flex;flex-direction:column;gap:24px}
+.sec-head{display:flex;flex-direction:column;gap:8px;max-width:680px}
+.sec-head h2{font-size:clamp(28px,4vw,38px);font-weight:700;letter-spacing:-.02em}
+.sec-head p{color:var(--muted)}
+h3.sub{font-size:22px;font-weight:700}
+
+/* calculadora: formulário à esquerda, cupom à direita */
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,400px);gap:32px;align-items:start}
+
+/* rodapé */
+footer{border-top:1px solid var(--line);padding-block:24px;padding-inline:20px;color:var(--muted);font-size:13px;text-align:center}
+
+@media (max-width:820px){
+  .calc{grid-template-columns:minmax(0,1fr)}
+  .wrap{gap:56px}
+}
+@media (max-width:480px){
+  .top-in{gap:10px;padding-inline:16px}
+  .wrap{padding-inline:16px}
+}

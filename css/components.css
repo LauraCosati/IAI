@@ -1,0 +1,64 @@
+/* Componentes reutilizados em mais de uma seção. */
+
+/* rótulos */
+legend,.lbl{font-weight:600;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);padding:0;margin-bottom:6px;display:block}
+
+/* botões */
+.btn{font:600 15px/1 var(--body);border:0;border-radius:8px;padding:11px 14px;cursor:pointer;background:var(--mark);color:var(--mark-ink);align-self:flex-start}
+.btn:hover{filter:brightness(.95)}
+.btn:disabled{opacity:.5;cursor:default}
+.btn2{font:600 15px/1 var(--body);border:1px solid var(--line);border-radius:8px;padding:10px 14px;cursor:pointer;background:var(--surface);color:var(--ink)}
+
+/* controle segmentado */
+.seg{display:flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+.seg label{position:relative;cursor:pointer}
+.seg input{position:absolute;opacity:0;inset:0;cursor:pointer;margin:0}
+.seg span{display:block;padding:7px 12px;font-size:14px;font-weight:500}
+.seg input:checked + span{background:var(--ink);color:var(--bg)}
+.seg input:focus-visible + span{outline:3px solid var(--mark);outline-offset:-3px}
+
+/* caixa de seleção */
+.check{display:flex;gap:8px;align-items:center;font-size:14px;font-weight:500;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--accent);margin:0}
+
+/* aviso */
+.aviso{background:var(--warn-bg);color:var(--warn-ink);border-radius:10px;padding:14px 16px;font-size:15px;max-width:780px}
+
+/* formulário */
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.campo{display:flex;flex-direction:column;min-width:0}
+.campo.full{grid-column:1/-1}
+.campo input[type=number],.campo select{font:500 16px/1.2 var(--body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%;min-width:0}
+.campo small{color:var(--muted);font-size:13px;margin-top:4px}
+.form details{grid-column:1/-1;border-top:1px solid var(--line);padding-top:12px}
+.form summary{font-weight:600;font-size:14px;cursor:pointer}
+.form details .form{margin-top:14px}
+
+/* cupom fiscal */
+.cupom{background:var(--paper);color:var(--paper-ink);font:400 13px/1.5 var(--mono);padding:22px 20px 26px;position:relative;border:1px solid var(--paper-line);border-bottom:0}
+.cupom::after{content:"";position:absolute;left:-1px;right:-1px;bottom:-9px;height:10px;background:linear-gradient(135deg,var(--paper) 7px,transparent 0) 0 0/14px 10px repeat-x,linear-gradient(225deg,var(--paper) 7px,transparent 0) 0 0/14px 10px repeat-x}
+.cupom h3{font:600 14px/1.3 var(--mono);text-align:center;letter-spacing:.06em}
+.cupom .sub{text-align:center;opacity:.75;margin-bottom:6px}
+.cupom .r{display:flex;justify-content:space-between;gap:12px}
+.cupom .r span:first-child{min-width:0}
+.cupom .r span:last-child{white-space:nowrap;font-variant-numeric:tabular-nums}
+.cupom hr{border:0;border-top:1px dashed var(--paper-line);margin:8px 0}
+.cupom .tot{font-weight:600;font-size:16px}
+.cupom .obs{opacity:.75;margin-top:8px;font-size:12px}
+.cupom .d{opacity:.75;font-size:12px;margin-bottom:4px}
+
+/* tabelas com rolagem horizontal e linha selecionável */
+.scroll{overflow-x:auto;min-width:0}
+.rank tr.sel td,.forn tr.sel td{background:var(--soft)}
+.rank .pick,.forn .pick{font:600 14px/1.2 var(--body);color:var(--ink);background:none;border:0;padding:0;cursor:pointer;text-align:left;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.rank .pick:hover{text-decoration-color:var(--accent)}
+.rodape-tab{font-size:13px;color:var(--muted);max-width:780px}
+
+/* barras e etiquetas */
+.track{height:14px;display:block}
+.bar{display:block;height:14px;min-width:2px;background:var(--accent);border-radius:0 4px 4px 0}
+.pill{font:500 12px/1 var(--mono);border:1px solid var(--line);border-radius:99px;padding:3px 8px;white-space:nowrap;color:var(--muted)}
+
+@media (max-width:480px){
+  .form{grid-template-columns:minmax(0,1fr)}
+}

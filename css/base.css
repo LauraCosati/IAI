@@ -1,0 +1,19 @@
+/* Reset e estilos dos elementos HTML. */
+*{box-sizing:border-box}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--body);margin:0}
+@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--mark);outline-offset:2px}
+h1,h2,h3,h4{font-family:var(--display);margin:0;text-wrap:balance;line-height:1.1}
+p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+fieldset{border:0;padding:0;margin:0;min-width:0}
+
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{font:600 12px/1.2 var(--body);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+.num{font-variant-numeric:tabular-nums}
