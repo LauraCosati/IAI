@@ -1,0 +1,27 @@
+/* Tokens de design: cores, tipografia e tema escuro. */
+:root{
+  --bg:#F2F4F8; --surface:#FFFFFF; --ink:#141B2D; --muted:#566079; --line:#D3D9E5;
+  --accent:#2340D9; --accent-ink:#FFFFFF; --soft:#E4E9FB;
+  --mark:#FFD43B; --mark-ink:#141B2D;
+  --paper:#FFFDF4; --paper-ink:#1E2333; --paper-line:#C9C3A8;
+  --warn-bg:#FFF3D1; --warn-ink:#5E4300;
+  --display:"Bricolage Grotesque","Arial Narrow",system-ui,sans-serif;
+  --body:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Spline Sans Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C111E; --surface:#151C2E; --ink:#E8ECF6; --muted:#9BA6C0; --line:#29324C;
+    --accent:#93A5FF; --accent-ink:#0C111E; --soft:#1C2644;
+    --mark:#FFD43B; --mark-ink:#141B2D;
+    --paper:#1A2135; --paper-ink:#E8ECF6; --paper-line:#3A4563;
+    --warn-bg:#3A2E0E; --warn-ink:#FFE08A; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0C111E; --surface:#151C2E; --ink:#E8ECF6; --muted:#9BA6C0; --line:#29324C;
+  --accent:#93A5FF; --accent-ink:#0C111E; --soft:#1C2644;
+  --mark:#FFD43B; --mark-ink:#141B2D;
+  --paper:#1A2135; --paper-ink:#E8ECF6; --paper-line:#3A4563;
+  --warn-bg:#3A2E0E; --warn-ink:#FFE08A; color-scheme:dark;
+}

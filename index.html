@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IAI?</title>
+<meta name="description" content="E aí, qual IA faz esse trabalho? Compare ChatGPT, Gemini, Claude, Copilot, Perplexity, DeepSeek e Grok e calcule quanto custa cada prompt em reais.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;600&display=swap">
+
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/sections.css">
+
+<script type="module" src="js/main.js"></script>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="logo" href="#inicio" aria-label="IAI? Início">IAI<b>?</b></a>
+    <nav class="nav" aria-label="Seções">
+      <a href="#escolher">Escolher</a>
+      <a href="#perguntar">Perguntar</a>
+      <a href="#calcular">Calcular</a>
+      <a href="#agentes">Multiagentes</a>
+      <a href="#comparar">Comparar</a>
+      <a href="#uso">Uso no Brasil</a>
+      <a href="#metodo">Método e fontes</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="hero" id="inicio">
+  <h1>IAI<b>?</b></h1>
+  <p class="lead">E aí, qual IA faz esse trabalho? E quanto custa cada pergunta?</p>
+  <p class="stamp">Preços de API conferidos nas páginas oficiais em 2 out. 2026 · câmbio de referência R$ 5,10</p>
+</section>
+
+<section id="escolher">
+  <div class="sec-head">
+    <h2>Qual IA para qual trabalho</h2>
+    <p>Escolha a tarefa e diga onde você trabalha. A recomendação muda na hora.</p>
+  </div>
+  <div class="tarefas" id="tarefas" role="group" aria-label="Tarefa"></div>
+  <div class="filtros">
+    <fieldset>
+      <legend>Pacote de escritório</legend>
+      <div class="seg">
+        <label><input type="radio" name="eco" id="eco-nenhum" value="nenhum" checked><span>Nenhum em especial</span></label>
+        <label><input type="radio" name="eco" id="eco-ms" value="microsoft"><span>Microsoft 365</span></label>
+        <label><input type="radio" name="eco" id="eco-google" value="google"><span>Google Workspace</span></label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Quanto dá para pagar por mês</legend>
+      <div class="seg">
+        <label><input type="radio" name="orc" id="orc-0" value="0"><span>Nada</span></label>
+        <label><input type="radio" name="orc" id="orc-50" value="50"><span>Até R$ 50</span></label>
+        <label><input type="radio" name="orc" id="orc-130" value="130" checked><span>Até R$ 130</span></label>
+      </div>
+    </fieldset>
+    <label class="check"><input type="checkbox" id="sensivel"> Vou colar dados pessoais ou sigilosos</label>
+  </div>
+  <p class="aviso" id="aviso" hidden>Antes de colar, confira duas coisas: se o plano usa as conversas para treinar modelos e o que a sua instituição permite. Planos gratuitos costumam proteger menos. Na API do Gemini, por exemplo, o nível gratuito usa o conteúdo para melhorar os produtos e o pago não usa. O caminho mais seguro é o plano corporativo contratado pela própria organização.</p>
+  <div class="resultado" id="resultado" aria-live="polite"></div>
+</section>
+
+<section id="perguntar">
+  <div class="sec-head">
+    <h2>Seu caso é mais específico?</h2>
+    <p>Descreva a situação. O assistente responde com os dados desta página e faz a conta quando a resposta precisa de um valor.</p>
+  </div>
+  <div class="chat">
+    <div class="sug" id="sug" role="group" aria-label="Perguntas de exemplo"></div>
+    <div class="msgs" id="msgs" aria-live="polite"></div>
+    <form class="ask" id="ask">
+      <label class="lbl" for="q">Sua pergunta</label>
+      <div class="ask-row">
+        <textarea id="q" rows="2" maxlength="2000" placeholder="Ex.: preciso resumir 200 processos por mês, com dados pessoais. Qual IA usar e quanto custa?"></textarea>
+        <button class="btn" id="q-enviar" type="submit" disabled>Perguntar</button>
+        <button class="btn2" id="q-parar" type="button" hidden>Parar</button>
+      </div>
+    </form>
+    <p class="nota-chat" id="q-estado">Conectando ao assistente…</p>
+    <p class="nota-chat">Quem responde é o Gemini, do Google, uma das empresas comparadas aqui. Ele foi instruído a usar o mesmo critério para todas. O assistente usa o nível gratuito da API do Gemini, em que o Google pode usar o conteúdo das perguntas para melhorar os produtos. Não escreva dados pessoais ou sigilosos na pergunta. Confira a resposta antes de decidir.</p>
+  </div>
+</section>
+
+<section id="calcular">
+  <div class="sec-head">
+    <h2>Quanto custa um prompt</h2>
+    <p>Nenhuma IA tem preço de tabela por prompt. O aplicativo cobra assinatura mensal e a API cobra por token, que é um pedaço de palavra. O custo de um prompt sai do tamanho do que você envia e do que recebe.</p>
+  </div>
+  <div class="calc">
+    <div class="form">
+      <div class="campo full">
+        <label class="lbl" for="f-preset">Tipo de prompt</label>
+        <select id="f-preset"></select>
+      </div>
+      <div class="campo">
+        <label class="lbl" for="f-win">Palavras que você envia</label>
+        <input type="number" id="f-win" min="1" max="300000" step="50" value="4000">
+        <small>Pergunta mais documentos anexados.</small>
+      </div>
+      <div class="campo">
+        <label class="lbl" for="f-wout">Palavras da resposta</label>
+        <input type="number" id="f-wout" min="1" max="50000" step="50" value="400">
+        <small>Na maioria dos modelos, a saída custa de 3 a 8 vezes a entrada.</small>
+      </div>
+      <div class="campo">
+        <label class="lbl" for="f-dia">Prompts por dia</label>
+        <input type="number" id="f-dia" min="1" max="100000" step="1" value="20">
+      </div>
+      <div class="campo">
+        <label class="lbl" for="f-dias">Dias úteis no mês</label>
+        <input type="number" id="f-dias" min="1" max="31" step="1" value="22">
+      </div>
+      <div class="campo">
+        <label class="lbl" for="f-fx">Dólar em reais</label>
+        <input type="number" id="f-fx" min="1" max="20" step="0.01" value="5.10">
+        <small>Média de set. 2026: R$ 5,11 (PTAX).</small>
+      </div>
+      <div class="campo">
+        <label class="lbl" for="f-tpw">Tokens por palavra</label>
+        <input type="number" id="f-tpw" min="1" max="3" step="0.1" value="1.5">
+        <small>Estimativa para português. Em inglês fica perto de 1,3.</small>
+      </div>
+      <label class="check"><input type="checkbox" id="f-iof" checked> Somar IOF de 3,5% do cartão internacional</label>
+      <label class="check"><input type="checkbox" id="f-off" checked> Uso em horário comercial de Brasília</label>
+    </div>
+    <div class="cupom" id="cupom" aria-live="polite"></div>
+  </div>
+  <p class="resumo" id="resumo"></p>
+  <div class="scroll">
+    <table class="rank" id="rank">
+      <thead><tr><th>Modelo</th><th>Faixa</th><th class="n">Por prompt</th><th class="n">Por mês</th><th class="barcell">Custo por prompt, em escala</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="rodape-tab">Clique em um modelo para ver a conta no cupom. † Modelos novos da Anthropic contam cerca de 30% mais tokens para o mesmo texto. ‡ Tarifa de contexto longo aplicada. § Tarifa fora do pico. O Copilot da Microsoft fica fora desta tabela porque só é vendido por assinatura.</p>
+
+  <h3 class="sub">Assinatura ou pagar por uso?</h3>
+  <div class="scroll">
+    <table class="assin" id="assin">
+      <thead><tr><th>Assinatura</th><th class="n">Preço por mês</th><th class="n">Mesmo uso pela API</th><th class="n">Empata em</th><th>Para esse volume</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="rodape-tab">A assinatura inclui o aplicativo e tem limite de uso. A API não tem aplicativo e exige alguma programação. A comparação serve para dimensionar o gasto. Ela não significa que uma substitui a outra.</p>
+</section>
+
+<section id="agentes">
+  <div class="sec-head">
+    <h2>Quanto custa orquestrar multiagentes</h2>
+    <p>Na orquestração, um agente coordenador divide a tarefa entre subagentes que trabalham em paralelo, cada um com suas ferramentas. A cada passo, o agente relê tudo o que já acumulou. Por isso a conta cresce muito mais rápido que a de um prompt.</p>
+  </div>
+  <div class="calc">
+    <div class="form">
+      <div class="campo">
+        <label class="lbl" for="m-orq">Modelo do orquestrador</label>
+        <select id="m-orq"></select>
+      </div>
+      <div class="campo">
+        <label class="lbl" for="m-sub">Modelo dos subagentes</label>
+        <select id="m-sub"></select>
+      </div>
+      <div class="campo">
+        <label class="lbl" for="m-n">Subagentes</label>
+        <input type="number" id="m-n" min="1" max="50" step="1" value="3">
+      </div>
+      <div class="campo">
+        <label class="lbl" for="m-k">Passos por subagente</label>
+        <input type="number" id="m-k" min="1" max="60" step="1" value="10">
+        <small>Cada passo é uma chamada de ferramenta, como uma busca ou a leitura de um arquivo.</small>
+      </div>
+      <div class="campo">
+        <label class="lbl" for="m-buscas">Buscas pagas por subagente</label>
+        <input type="number" id="m-buscas" min="0" max="200" step="1" value="5">
+      </div>
+      <div class="campo">
+        <label class="lbl" for="m-mes">Tarefas por mês</label>
+        <input type="number" id="m-mes" min="1" max="1000000" step="1" value="100">
+      </div>
+      <label class="check"><input type="checkbox" id="m-cache" checked> Usar cache de contexto</label>
+      <details>
+        <summary>Ajustar tamanhos, em tokens</summary>
+        <div class="form">
+          <div class="campo">
+            <label class="lbl" for="m-base">Contexto inicial de cada agente</label>
+            <input type="number" id="m-base" min="100" max="200000" step="100" value="3000">
+            <small>Instruções, definição das ferramentas e a tarefa.</small>
+          </div>
+          <div class="campo">
+            <label class="lbl" for="m-res">Resultado de cada ferramenta</label>
+            <input type="number" id="m-res" min="0" max="200000" step="100" value="2500">
+            <small>Uma página da web média tem cerca de 2.500 tokens.</small>
+          </div>
+          <div class="campo">
+            <label class="lbl" for="m-out">Saída por passo</label>
+            <input type="number" id="m-out" min="1" max="20000" step="50" value="300">
+          </div>
+          <div class="campo">
+            <label class="lbl" for="m-sum">Resumo entregue por subagente</label>
+            <input type="number" id="m-sum" min="1" max="50000" step="100" value="1000">
+          </div>
+          <div class="campo">
+            <label class="lbl" for="m-turnos">Turnos do orquestrador</label>
+            <input type="number" id="m-turnos" min="2" max="20" step="1" value="3">
+            <small>Planejar, ler os resumos e redigir.</small>
+          </div>
+          <div class="campo">
+            <label class="lbl" for="m-final">Resposta final</label>
+            <input type="number" id="m-final" min="1" max="50000" step="100" value="1500">
+          </div>
+          <div class="campo">
+            <label class="lbl" for="m-pbusca">Preço por mil buscas, em US$</label>
+            <input type="number" id="m-pbusca" min="0" max="100" step="1" value="10">
+          </div>
+        </div>
+      </details>
+    </div>
+    <div class="cupom" id="cupom-ag" aria-live="polite"></div>
+  </div>
+  <div class="scroll">
+    <table class="arq" id="arq">
+      <thead><tr><th>Arquitetura</th><th class="n">Chamadas ao modelo</th><th class="n">Tokens processados</th><th class="n">Por tarefa</th><th class="n">Em relação ao prompt simples</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <h3 class="sub">A mesma orquestração em cada fornecedor</h3>
+  <div class="scroll">
+    <table class="forn" id="forn">
+      <thead><tr><th>Fornecedor</th><th>Orquestrador</th><th>Subagentes</th><th class="n">Por tarefa</th><th class="n">Por mês</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="rodape-tab">Clique em um fornecedor para carregar os modelos dele. A conta usa o câmbio e o IOF da calculadora acima. Cada passo reenvia todo o contexto acumulado, sem compactação. Com o cache ligado, o que já foi lido paga a tarifa de cache, e o que é novo paga a tarifa de gravação quando ela existe (1,25 vez a entrada na OpenAI e na Anthropic). O armazenamento de cache do Google, cobrado por hora, fica de fora. A busca custa US$ 10 por mil na OpenAI e na Anthropic e US$ 14 por mil no Google, depois de 5.000 gratuitas por mês. A tabela usa o mesmo preço de busca para todos.</p>
+  <p class="rodape-tab">Referência de mercado: a Anthropic relata que agentes usam cerca de 4 vezes mais tokens que uma conversa, e sistemas multiagentes, cerca de 15 vezes. Ela indica de 2 a 4 subagentes, com 10 a 15 chamadas de ferramenta cada, para comparações diretas, e mais de 10 subagentes para pesquisas complexas. Multiagentes só compensam quando o valor da tarefa paga esse consumo.</p>
+</section>
+
+<section id="comparar">
+  <div class="sec-head">
+    <h2>As sete mais usadas, lado a lado</h2>
+    <p>O que cada uma tem de particular, quando usar, onde tomar cuidado e quanto custa.</p>
+  </div>
+  <div class="ias" id="ias"></div>
+</section>
+
+<section id="uso">
+  <div class="sec-head">
+    <h2>Quem usa IA no trabalho</h2>
+    <p>As pesquisas medem públicos e perguntas diferentes. Por isso os números não batem entre si.</p>
+  </div>
+  <div class="uso">
+    <dl class="stats" id="stats"></dl>
+    <div class="share">
+      <h3>Participação dos chatbots de IA no mundo, na web (Statcounter, ago. 2026)</h3>
+      <div id="share"></div>
+      <p class="rodape-tab">Nos aplicativos de celular a conta é outra: ChatGPT 46,4%, Gemini 27,7% e Claude 10,3% (Sensor Tower, mai. 2026). O Grok não aparece na medição do Statcounter.</p>
+    </div>
+  </div>
+</section>
+
+<section id="metodo">
+  <div class="sec-head">
+    <h2>Método e fontes</h2>
+    <p>Como o site calcula e de onde vem cada número.</p>
+  </div>
+  <div class="metodo">
+    <div>
+      <h3>A conta do prompt</h3>
+      <p class="formula">tokens = palavras × tokens por palavra<br>custo em US$ = (tokens de entrada × preço de entrada + tokens de saída × preço de saída) ÷ 1.000.000 + taxa por requisição<br>custo em R$ = custo em US$ × câmbio × (1 + IOF)</p>
+      <ul>
+        <li>Preços por milhão de tokens, tarifa padrão, das páginas oficiais de cada empresa.</li>
+        <li>Tokens por palavra é uma estimativa. Cada empresa conta tokens de um jeito, e português gasta mais que inglês.</li>
+        <li>Fica de fora: o raciocínio interno do modelo, que é cobrado como saída; o histórico da conversa, que é reenviado a cada mensagem; e buscas na web, de US$ 10 a US$ 14 por mil.</li>
+        <li>Também fica de fora o que barateia: cache de entrada e processamento em lote, que dá 50% de desconto na OpenAI, na Anthropic e no Google.</li>
+        <li>DeepSeek cobra metade fora do pico. O pico vai de 22h a 1h e de 3h a 7h no horário de Brasília.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>A recomendação</h3>
+      <p>Cada IA tem uma nota de 0 a 5 por tarefa. As notas são um julgamento a partir dos recursos documentados e do posicionamento de cada produto. Não são resultado de teste comparativo. Vale ajustar com a sua experiência.</p>
+      <ul class="com-espaco">
+        <li>Quem já usa Microsoft 365 ou Google Workspace soma 1,5 ponto ao Copilot ou ao Gemini em texto, documentos, dados e reuniões.</li>
+        <li>Empate se resolve pelo menor custo por prompt típico da tarefa.</li>
+        <li>O orçamento não muda a nota. Ele define qual plano aparece como sugerido.</li>
+      </ul>
+    </div>
+    <div class="largo">
+      <h3>A conta dos multiagentes</h3>
+      <p class="formula">contexto do turno = contexto do turno anterior + saída anterior + conteúdo novo<br>custo do turno = contexto × preço de entrada + saída × preço de saída<br>custo da tarefa = orquestrador + subagentes × custo de um subagente + buscas</p>
+      <ul>
+        <li>Um subagente com 10 passos faz 11 chamadas ao modelo. A última redige o resumo que volta ao orquestrador.</li>
+        <li>O orquestrador planeja, recebe os resumos de todos os subagentes e redige a resposta final.</li>
+        <li>O agente único da comparação faz os mesmos passos de um subagente, no modelo do orquestrador.</li>
+        <li>O assistente da seção Perguntar recebe os dados desta página a cada pergunta e usa as duas calculadoras como ferramentas.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="scroll">
+    <table class="matriz" id="matriz"><thead></thead><tbody></tbody></table>
+  </div>
+  <h3 class="sub">Fontes</h3>
+  <ul class="fontes">
+    <li><a href="https://developers.openai.com/api/docs/pricing">OpenAI, preços da API</a></li>
+    <li><a href="https://platform.claude.com/docs/en/about-claude/pricing">Anthropic, preços da API do Claude</a></li>
+    <li><a href="https://ai.google.dev/gemini-api/docs/pricing">Google, preços da API do Gemini</a></li>
+    <li><a href="https://api-docs.deepseek.com/quick_start/pricing">DeepSeek, modelos e preços</a></li>
+    <li><a href="https://docs.x.ai/developers/models">xAI, modelos e preços do Grok</a></li>
+    <li><a href="https://docs.perplexity.ai/getting-started/pricing">Perplexity, preços da API</a> (inclui a tarifa de contexto longo do Grok)</li>
+    <li><a href="https://www.anthropic.com/engineering/built-multi-agent-research-system">Anthropic, como foi construído o sistema de pesquisa multiagente</a></li>
+    <li><a href="https://help.openai.com/en/articles/5722486-how-your-data-is-used-to-improve-model-performance">OpenAI, uso dos dados para treino</a></li>
+    <li><a href="https://privacy.claude.com/en/articles/10023580-is-my-data-used-for-model-training">Anthropic, uso dos dados para treino</a></li>
+    <li><a href="https://theaicareerlab.com/blog/does-ai-train-on-your-data">The AI Career Lab, treino com dados no Claude, ChatGPT e Gemini</a></li>
+    <li><a href="https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-privacy">Microsoft, dados e privacidade no Microsoft 365 Copilot</a></li>
+    <li><a href="https://www.perplexity.ai/help-center/en/articles/10354855-what-data-does-perplexity-collect-about-me">Perplexity, dados coletados</a></li>
+    <li><a href="https://cdn.deepseek.com/policies/en-US/deepseek-privacy-policy.html">DeepSeek, política de privacidade</a></li>
+    <li><a href="https://x.ai/legal/faq">xAI, perguntas frequentes do consumidor</a></li>
+    <li><a href="https://portaldeprefeitura.com.br/curiosidades/nubank-openai-anunciam-parceria-com-lancamento-chatgpt-go-brasil/606839/">ChatGPT Go a R$ 39,99 no Brasil</a></li>
+    <li><a href="https://gptprompts.ai/pt-br/precos-chatgpt">Planos do ChatGPT em 2026</a></li>
+    <li><a href="https://canaltech.com.br/inteligencia-artificial/como-assinar-claude-mais-barato/">Canaltech, preço do Claude Pro no Brasil</a></li>
+    <li><a href="https://oantagonista.com.br/ladooa/tecnologia/quanto-custa-assinar-o-gemini-pro-no-brasil-saiba-as-vantagens-da-versao-paga-da-ia-do-google/">Google AI Pro a R$ 96,99</a></li>
+    <li><a href="https://macmagazine.com.br/post/2025/10/07/google-lanca-plano-de-ia-mais-acessivel-com-gemini-2-5-pro-no-brasil/">Google AI Plus a R$ 25</a></li>
+    <li><a href="https://tecnoblog.net/noticias/google-reduz-preco-de-ia-no-brasil-mas-continua-carissimo/">Tecnoblog, Google AI Ultra a R$ 779,90</a></li>
+    <li><a href="https://gptprompts.ai/pt-br/precos-copilot">Planos do Microsoft Copilot em 2026</a></li>
+    <li><a href="https://www.baguete.com.br/noticias/quase-ninguem-paga-pelo-copilot-chat">Baguete, assentos pagos do Copilot</a></li>
+    <li><a href="https://www.notebookcheck.net/What-AI-subscriptions-cost-in-2026-and-which-one-is-worth-it.1341432.0.html">Notebookcheck, assinaturas de IA em 2026</a></li>
+    <li><a href="https://gs.statcounter.com/ai-chatbot-market-share/all/worldwide/">Statcounter, participação dos chatbots de IA</a></li>
+    <li><a href="https://www.kotakneo.com/news/global-markets/chatgpt-market-share-below-50-gemini-claude-growth/">Sensor Tower, State of AI 2026 (via Kotak Neo)</a></li>
+    <li><a href="https://www.portaltela.com/noticias/economia/2026/06/27/uso-de-ia-no-trabalho-cresce-medo-de-substituicao-cai-entre-brasileiros/">Datafolha, uso de IA no trabalho</a></li>
+    <li><a href="https://viva.com.br/carreira-e-educacao/uso-diario-de-ia-no-trabalho-sobe-de-17-para-35-no-brasil-aponta-linkedin.html">LinkedIn, uso diário de IA no trabalho</a></li>
+    <li><a href="https://www.band.com.br/ciencia-e-tecnologia/noticias/58-dos-profissionais-usam-ia-no-dia-a-dia-mas-ainda-divide-opinioes-202602271546">Catho, Pesquisa de Tendências 2026</a></li>
+    <li><a href="https://paraibabusiness.com.br/brasil-se-destaca-no-uso-avancado-de-ia-no-trabalho-aponta-estudo-da-microsoft/">Microsoft, Work Trend Index 2026</a></li>
+    <li><a href="https://numerando.com.br/cambio/dolar-americano/2026">Banco Central, PTAX do dólar em 2026</a></li>
+    <li><a href="https://horadecodar.com.br/claude-code-preco-brasil/">IOF de 3,5% em compras internacionais</a></li>
+  </ul>
+</section>
+
+</main>
+<footer>IAI? é um projeto acadêmico. Preços de IA mudam com frequência. Confira a fonte antes de decidir.</footer>
+</body>
+</html>

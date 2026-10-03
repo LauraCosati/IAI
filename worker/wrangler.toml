@@ -1,0 +1,23 @@
+# Proxy do assistente do IAI?. Guarda a chave do Gemini e repassa as perguntas do site.
+# Publicar: npx wrangler secret put GEMINI_API_KEY  &&  npx wrangler deploy
+name = "iai-assistente"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+# Publica em https://iai-assistente.lauracosati.workers.dev, sem endereços extras por versão.
+workers_dev = true
+preview_urls = false
+
+[vars]
+# Alias que aponta sempre para o Flash atual, disponível no nível gratuito.
+GEMINI_MODEL = "gemini-flash-latest"
+# Endereços que podem chamar o proxy, separados por vírgula.
+ORIGENS = "https://lauracosati.github.io,http://localhost:8000"
+
+# Limite por IP: 10 requisições por minuto.
+[[ratelimits]]
+name = "LIMITE"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 10
+  period = 60
