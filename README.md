@@ -59,6 +59,14 @@ com o Google: ele chama um proxy no Cloudflare Workers (pasta `worker/`), que gu
 monta as instruções com os dados do site e limita o uso por IP. Quando o Gemini pede uma conta,
 o proxy devolve o pedido e o navegador executa as calculadoras da própria página.
 
+O assistente recebe a cada pergunta tudo o que a página mostra: fichas das IAs, preços completos
+de API (pico, contexto longo, cache), o ranking de cada tarefa já com plano sugerido e custo em
+reais, assinatura × API, pesquisas de uso e método. Também recebe as escolhas do visitante
+(tarefa, pacote de escritório, orçamento, câmbio, IOF). Para casos fora disso, usa quatro
+ferramentas: `comparar_custos`, `recomendar`, `calcular_custo_prompt` e `calcular_multiagentes`.
+Tudo isso fica em `js/contexto-assistente.js`. Depois de mudar esse arquivo ou `js/dados.js`,
+publique o worker de novo (`cd worker && npx wrangler deploy`).
+
 ```
 navegador  →  worker (chave + instruções)  →  Gemini
     ↑   executa as calculadoras quando o Gemini pede   ↓
