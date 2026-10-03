@@ -7,7 +7,8 @@ import {renderTarefas, renderEscolha, iniciarEscolher} from "./secoes/escolher.j
 import {renderPreset, renderCalc, iniciarCalcular} from "./secoes/calcular.js";
 import {prepararAg, renderAg, iniciarAgentes} from "./secoes/agentes.js";
 import {renderIAs, renderShare, renderMatriz} from "./secoes/estaticas.js";
-import {regras, iniciarAssistente} from "./secoes/assistente.js";
+import {iniciarAssistente} from "./secoes/assistente.js";
+import {regras} from "./contexto-assistente.js";
 
 /* câmbio, IOF e horário da calculadora valem para todas as seções */
 function tudo() { renderCalc(); renderEscolha(); renderAg(); }
@@ -32,4 +33,4 @@ iniciarCalcular();
 iniciarAgentes();
 
 /* acesso para depuração no console */
-window.__iai = {custo, modelo, ranking, rodar, orquestrar, cfgAg, regras, estado};
+window.__iai = {custo, modelo, ranking, rodar, orquestrar, cfgAg, regras: () => regras(estado()), estado};

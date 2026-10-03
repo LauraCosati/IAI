@@ -16,6 +16,8 @@ css/
   components.css        Peças reutilizadas: botões, formulários, cupom, barras
   sections.css          Estilos específicos de cada seção, na ordem da página
 js/
+  config.js             Endereço do proxy do assistente
+  contexto-assistente.js  Instruções e ferramentas do assistente (usado também pelo worker)
   main.js               Ponto de entrada: monta as seções e liga os eventos
   dados.js              Tarefas, modelos, preços, planos e notas (edite aqui para atualizar)
   calculos.js           Regras de cálculo, sem acesso ao DOM
@@ -27,6 +29,7 @@ js/
     calcular.js         Quanto custa um prompt
     agentes.js          Quanto custa orquestrar multiagentes
     estaticas.js        Comparar, Uso no Brasil e Método (montadas uma vez)
+worker/                 Proxy do assistente (Cloudflare Worker), guarda a chave do Gemini
 ```
 
 ## Como rodar
@@ -51,6 +54,40 @@ Todos os números ficam em `js/dados.js`. Ao mudar um preço, atualize também a
 
 ## Assistente
 
-A seção "Perguntar" usa `window.claude`, disponível quando a página é aberta como Artifact
-no Claude. Em outros lugares, ela mostra que o assistente está indisponível e o resto do
-site funciona normalmente.
+A seção "Perguntar" responde pelo nível gratuito da API do Gemini. O navegador não fala direto
+com o Google: ele chama um proxy no Cloudflare Workers (pasta `worker/`), que guarda a chave,
+monta as instruções com os dados do site e limita o uso por IP. Quando o Gemini pede uma conta,
+o proxy devolve o pedido e o navegador executa as calculadoras da própria página.
+
+```
+navegador  →  worker (chave + instruções)  →  Gemini
+    ↑   executa as calculadoras quando o Gemini pede   ↓
+```
+
+### Publicar o proxy
+
+1. Crie uma chave gratuita em https://aistudio.google.com/apikey.
+2. Crie uma conta gratuita na Cloudflare (https://dash.cloudflare.com/sign-up).
+3. No terminal:
+   ```sh
+   cd worker
+   npm install
+   npx wrangler login
+   npx wrangler secret put GEMINI_API_KEY   # cole a chave quando pedir
+   npx wrangler deploy
+   ```
+4. O deploy mostra um endereço como `https://iai-assistente.SEU-USUARIO.workers.dev`.
+   Cole esse endereço, terminado em `/chat`, em `js/config.js`.
+5. Se o site não estiver em `https://lauracosati.github.io`, ajuste `ORIGENS` em `worker/wrangler.toml`
+   e rode `npx wrangler deploy` de novo.
+
+Enquanto `js/config.js` estiver vazio, a seção mostra que o assistente está fora do ar e o
+resto do site funciona normalmente.
+
+### Cuidados
+
+- Nunca coloque a chave do Gemini em arquivos do site nem no repositório. Ela fica só no segredo do Worker.
+- No nível gratuito, o Google pode usar o conteúdo das perguntas para melhorar os produtos. A página avisa o visitante.
+- Os limites gratuitos (requisições por minuto e por dia) aparecem no AI Studio e mudam com o tempo.
+  Para trocar o modelo, edite `GEMINI_MODEL` em `worker/wrangler.toml`.
+- Para ver erros do proxy em tempo real: `npx wrangler tail`.
