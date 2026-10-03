@@ -3,6 +3,9 @@
 name = "iai-assistente"
 main = "src/index.js"
 compatibility_date = "2025-09-01"
+# Publica em https://iai-assistente.lauracosati.workers.dev, sem endereços extras por versão.
+workers_dev = true
+preview_urls = false
 
 [vars]
 # Alias que aponta sempre para o Flash atual, disponível no nível gratuito.
