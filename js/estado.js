@@ -11,6 +11,17 @@ export function estado() {
   };
 }
 
+/* escolhas do visitante na seção "Qual IA para qual trabalho" */
+export function visitante() {
+  const t = document.querySelector('.tarefa[aria-pressed="true"]');
+  return {
+    tarefa: t ? t.getAttribute("data-t") : "docs",
+    pacote: document.querySelector('input[name="eco"]:checked').value,
+    orcamento: parseFloat(document.querySelector('input[name="orc"]:checked').value),
+    sensivel: $("sensivel").checked
+  };
+}
+
 /* calculadora de multiagentes */
 export function cfgAg() {
   return {

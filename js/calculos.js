@@ -19,6 +19,13 @@ export const precoPlano = (p, s) => p.brl !== undefined ? p.brl : p.usd * s.fx *
 
 export const emReais = (u, s) => u * s.fx * (s.iof ? 1.035 : 1);
 
+/* plano mais completo de uma IA que cabe no orçamento mensal, em reais */
+export function planoSugerido(a, orc, s) {
+  let best = a.ind[0];
+  a.ind.forEach(p => { const v = precoPlano(p, s); if (v <= orc && v >= precoPlano(best, s)) best = p; });
+  return {nome: best.n, reais: precoPlano(best, s)};
+}
+
 /* ---------- recomendação ---------- */
 
 /* ordena as IAs pela nota na tarefa; empate se resolve pelo menor custo */

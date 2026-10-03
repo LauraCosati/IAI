@@ -127,6 +127,15 @@ export const ASSIN = [
   {plano:"SuperGrok", usd:30, ref:"grok"}
 ];
 
+/* pesquisas de uso de IA no trabalho, no Brasil */
+export const PESQUISAS = [
+  {valor:"24%", texto:"dos brasileiros que conhecem IA já a usaram no trabalho. Eram 17% um ano antes. Datafolha, jun. 2026."},
+  {valor:"35%", texto:"dos profissionais usam IA todo dia no trabalho. Eram 17% dezoito meses antes. LinkedIn, set. a dez. 2025."},
+  {valor:"58%", texto:"dos profissionais já recorreram a ferramentas de IA. Catho, Pesquisa de Tendências 2026."},
+  {valor:"27%", texto:"dos usuários brasileiros de IA estão no nível avançado, contra 16% na média mundial. Microsoft Work Trend Index 2026."}
+];
+
+/* participação dos chatbots na web (Statcounter, ago. 2026), em % */
 export const SHARE = [["ChatGPT",79.4],["Gemini",10.9],["Perplexity",4.31],["Copilot",2.79],["Claude",2.57],["DeepSeek",0.02]];
 
 /* ---------- multiagentes ---------- */

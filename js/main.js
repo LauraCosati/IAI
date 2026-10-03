@@ -1,12 +1,12 @@
 /* Ponto de entrada: monta as seções e liga os eventos compartilhados. */
 import {modelo, tarefa} from "./dados.js";
 import {custo, ranking, rodar, orquestrar} from "./calculos.js";
-import {estado, cfgAg} from "./estado.js";
+import {estado, cfgAg, visitante} from "./estado.js";
 import {$} from "./utils.js";
 import {renderTarefas, renderEscolha, iniciarEscolher} from "./secoes/escolher.js";
 import {renderPreset, renderCalc, iniciarCalcular} from "./secoes/calcular.js";
 import {prepararAg, renderAg, iniciarAgentes} from "./secoes/agentes.js";
-import {renderIAs, renderShare, renderMatriz} from "./secoes/estaticas.js";
+import {renderIAs, renderPesquisas, renderShare, renderMatriz} from "./secoes/estaticas.js";
 import {iniciarAssistente} from "./secoes/assistente.js";
 import {regras} from "./contexto-assistente.js";
 
@@ -24,7 +24,7 @@ function iniciarCalculadoraPrompt() {
   ["f-iof", "f-off"].forEach(id => $(id).addEventListener("change", tudo));
 }
 
-renderTarefas(); renderPreset(); renderIAs(); renderShare(); renderMatriz(); prepararAg();
+renderTarefas(); renderPreset(); renderIAs(); renderPesquisas(); renderShare(); renderMatriz(); prepararAg();
 tudo();
 iniciarAssistente();
 iniciarEscolher();
@@ -33,4 +33,4 @@ iniciarCalcular();
 iniciarAgentes();
 
 /* acesso para depuração no console */
-window.__iai = {custo, modelo, ranking, rodar, orquestrar, cfgAg, regras: () => regras(estado()), estado};
+window.__iai = {custo, modelo, ranking, rodar, orquestrar, cfgAg, regras: () => regras(estado(), visitante()), estado};

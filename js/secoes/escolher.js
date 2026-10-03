@@ -1,6 +1,6 @@
 /* Seção "Qual IA para qual trabalho". */
 import {TAREFAS, tarefa} from "../dados.js";
-import {ranking, precoPlano} from "../calculos.js";
+import {ranking, planoSugerido} from "../calculos.js";
 import {estado} from "../estado.js";
 import {$, esc, dec, brl, todos} from "../utils.js";
 import {renderCalc, selecionarModelo} from "./calcular.js";
@@ -20,12 +20,9 @@ function porque(r, tid) {
   return (r.bonus ? "Já está dentro dos aplicativos que você usa. " : "") + t;
 }
 
-/* plano mais completo que cabe no orçamento */
 function planoSug(a, orc, s) {
-  let best = a.ind[0];
-  a.ind.forEach(p => { const v = precoPlano(p, s); if (v <= orc && v >= precoPlano(best, s)) best = p; });
-  const v = precoPlano(best, s);
-  return best.n + (v > 0 ? " · " + brl(v) + " por mês" : "");
+  const p = planoSugerido(a, orc, s);
+  return p.nome + (p.reais > 0 ? " · " + brl(p.reais) + " por mês" : "");
 }
 
 function custoTxt(r, tid) {

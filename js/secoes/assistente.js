@@ -1,8 +1,7 @@
 /* Seção "Seu caso é mais específico?": assistente que responde pelo Gemini, por meio do
    proxy em worker/. As calculadoras rodam aqui no navegador quando o modelo pede. */
-import {MODELOS, MOD_AG, modelo} from "../dados.js";
-import {custo, rodar, orquestrar} from "../calculos.js";
-import {estado, cfgAg} from "../estado.js";
+import {executarFerramenta} from "../contexto-assistente.js";
+import {estado, cfgAg, visitante} from "../estado.js";
 import {$, esc, todos} from "../utils.js";
 import {URL_ASSISTENTE} from "../config.js";
 
@@ -25,36 +24,6 @@ const HISTORICO = 8;       /* mensagens anteriores enviadas junto com a pergunta
 /* conversa visível: só perguntas e respostas finais, sem as rodadas de ferramenta */
 let conversa = [], ctl = null, ocupado = false;
 
-/* ---------- ferramentas executadas no navegador ---------- */
-
-const EXECUTAR = {
-  calcular_custo_prompt(i) {
-    const m = modelo(String(i.modelo)); if (!m) throw new Error("modelo desconhecido; use um destes ids: " + MODELOS.map(x => x.id).join(", "));
-    const s = estado(); s.wIn = Math.max(1, Number(i.palavras_entrada) || 1); s.wOut = Math.max(1, Number(i.palavras_saida) || 1);
-    const c = custo(m, s), n = Math.max(0, Number(i.prompts_por_mes) || 0);
-    return {modelo: m.nome, tokens_entrada: Math.round(c.tin), tokens_saida: Math.round(c.tout), reais_por_prompt: Number(c.brl.toFixed(4)), reais_por_mes: n ? Number((c.brl * n).toFixed(2)) : null};
-  },
-  calcular_multiagentes(i) {
-    const idsAg = MOD_AG.map(m => m.id);
-    const c = cfgAg(); c.orq = String(i.orquestrador); c.sub = String(i.modelo_subagentes);
-    if (!idsAg.includes(c.orq) || !idsAg.includes(c.sub)) throw new Error("modelo desconhecido; use um destes ids: " + idsAg.join(", "));
-    c.n = Math.min(50, Math.max(1, Math.round(Number(i.subagentes) || 1))); c.k = Math.min(60, Math.max(1, Math.round(Number(i.passos_por_subagente) || 1)));
-    if (i.buscas_por_subagente !== undefined) c.buscas = Math.max(0, Math.round(Number(i.buscas_por_subagente) || 0));
-    const s = estado(), r = orquestrar(c, s), simples = rodar(modelo(c.orq), [{novo: c.base, out: c.fin}], s, false), n = Math.max(0, Number(i.tarefas_por_mes) || 0);
-    return {reais_por_tarefa: Number(r.brl.toFixed(2)), reais_por_mes: n ? Number((r.brl * n).toFixed(2)) : null, chamadas_ao_modelo: r.chamadas, tokens_processados: Math.round(r.tokens), vezes_o_custo_de_um_prompt_simples: Number((r.usd / simples.usd).toFixed(1)), cache: c.cache};
-  }
-};
-
-function executar(chamada) {
-  try {
-    const f = EXECUTAR[chamada.name];
-    if (!f) throw new Error("ferramenta desconhecida");
-    return {name: chamada.name, response: {resultado: f(chamada.args || {})}};
-  } catch (e) {
-    return {name: chamada.name, response: {erro: e.message}};
-  }
-}
-
 /* ---------- comunicação com o proxy ---------- */
 
 class ErroAssistente extends Error {
@@ -68,7 +37,7 @@ async function chamarProxy(contents, signal) {
     r = await fetch(URL_ASSISTENTE, {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({contents, premissas: {fx: s.fx, iof: s.iof, tpw: s.tpw}}),
+      body: JSON.stringify({contents, premissas: {fx: s.fx, iof: s.iof, tpw: s.tpw, off: s.off}, visitante: visitante()}),
       signal
     });
   } catch (e) {
@@ -93,7 +62,8 @@ async function responder(signal) {
       return {texto, cortada: fim === "MAX_TOKENS"};
     }
     contents.push(conteudo);
-    contents.push({role: "user", parts: chamadas.map(c => ({functionResponse: executar(c)}))});
+    const s = estado(), ag = cfgAg(), v = visitante();
+    contents.push({role: "user", parts: chamadas.map(c => ({functionResponse: executarFerramenta(c, s, ag, v)}))});
   }
 }
 

@@ -1,5 +1,5 @@
 /* Seções que só dependem dos dados e são montadas uma vez: comparar, uso e método. */
-import {AIS, MODELOS, NOTAS, DADOS, SHARE, TAREFAS} from "../dados.js";
+import {AIS, MODELOS, NOTAS, DADOS, PESQUISAS, SHARE, TAREFAS} from "../dados.js";
 import {$, esc, dec} from "../utils.js";
 
 /* "As sete mais usadas, lado a lado" */
@@ -15,6 +15,11 @@ export function renderIAs() {
       '<p><span class="k">Use quando</span>' + esc(a.quando) + '</p><p><span class="k">Atenção</span>' + esc(a.atencao) + '</p><p><span class="k">Seus dados</span>' + esc(DADOS[a.id]) + "</p></div>" +
       '<div class="ia-preco"><h4>Assinatura</h4><ul>' + a.planos.map(p => "<li>" + esc(p) + "</li>").join("") + "</ul>" + api + "</div></article>";
   }).join("");
+}
+
+/* "Quem usa IA no trabalho": números das pesquisas */
+export function renderPesquisas() {
+  $("stats").innerHTML = PESQUISAS.map(p => '<div><dt class="num">' + esc(p.valor) + "</dt><dd>" + esc(p.texto) + "</dd></div>").join("");
 }
 
 /* "Quem usa IA no trabalho": barras de participação */

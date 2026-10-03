@@ -1,7 +1,8 @@
 /* Proxy do assistente do IAI? (Cloudflare Worker).
    Recebe a conversa do site, acrescenta as instruções e as ferramentas e chama o Gemini.
    A chave fica no segredo GEMINI_API_KEY e nunca chega ao navegador. */
-import {regras, FERRAMENTAS} from "../../js/contexto-assistente.js";
+import {regras, FERRAMENTAS, PACOTES} from "../../js/contexto-assistente.js";
+import {TAREFAS} from "../../js/dados.js";
 
 const LIMITE_CORPO = 60000;    /* bytes por requisição */
 const LIMITE_TURNOS = 30;      /* mensagens na conversa, contando as de ferramenta */
@@ -76,7 +77,14 @@ export default {
     const contents = limparConversa(corpo.contents);
     if (!contents) return resposta({erro: "requisicao_invalida"}, 400, origem);
     const p = corpo.premissas || {};
-    const premissas = {fx: faixa(p.fx, 1, 20, 5.10), iof: p.iof !== false, tpw: faixa(p.tpw, 1, 3, 1.5)};
+    const premissas = {fx: faixa(p.fx, 1, 20, 5.10), iof: p.iof !== false, tpw: faixa(p.tpw, 1, 3, 1.5), off: p.off !== false};
+    const v = corpo.visitante || {};
+    const visitante = {
+      tarefa: TAREFAS.some(t => t.id === v.tarefa) ? v.tarefa : "docs",
+      pacote: Object.hasOwn(PACOTES, v.pacote) ? v.pacote : "nenhum",
+      orcamento: faixa(v.orcamento, 0, 100000, 130),
+      sensivel: v.sensivel === true
+    };
 
     const url = "https://generativelanguage.googleapis.com/v1beta/models/" + encodeURIComponent(env.GEMINI_MODEL || "gemini-flash-latest") + ":generateContent";
     let r;
@@ -85,7 +93,7 @@ export default {
         method: "POST",
         headers: {"Content-Type": "application/json", "x-goog-api-key": env.GEMINI_API_KEY},
         body: JSON.stringify({
-          systemInstruction: {parts: [{text: regras(premissas)}]},
+          systemInstruction: {parts: [{text: regras(premissas, visitante)}]},
           contents,
           tools: [{functionDeclarations: FERRAMENTAS}],
           generationConfig: {maxOutputTokens: 4096}
